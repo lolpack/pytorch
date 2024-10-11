@@ -9874,7 +9874,7 @@ tensor([[[1.+1.j, 1.+1.j, 1.+1.j,  ..., 1.+1.j, 1.+1.j, 1.+1.j],
         class TestTensor(torch.Tensor):
             @staticmethod
             def __new__(cls, x, *args, **kwargs):
-                return super().__new__(cls, x, *args, **kwargs)
+                return super(TestTensor, cls).__new__(cls, x, *args, **kwargs)
 
         x = torch.ones(5)
         test_tensor = TestTensor(x)
@@ -9886,7 +9886,7 @@ tensor([[[1.+1.j, 1.+1.j, 1.+1.j,  ..., 1.+1.j, 1.+1.j, 1.+1.j],
         class TestStorage(torch._C.StorageBase):
             @staticmethod
             def __new__(cls, x, *args, **kwargs):
-                return super().__new__(cls, x, *args, **kwargs)
+                return super(TestStorage, cls).__new__(cls, x, *args, **kwargs)
 
         x = torch.UntypedStorage(5)
         test_storage = TestStorage(x)
