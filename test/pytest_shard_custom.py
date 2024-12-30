@@ -5,13 +5,17 @@ Modifications:
 * shards are now 1 indexed instead of 0 indexed
 * option for printing items in shard
 """
+from typing import TYPE_CHECKING, Self
+if TYPE_CHECKING:
+    import _pytest.config
+    import _pytest.unittest
 
 import hashlib
 
 from _pytest.config.argparsing import Parser
 
 
-def pytest_addoptions(parser: Parser):
+def pytest_addoptions(parser: Parser) -> None:
     """Add options to control sharding."""
     group = parser.getgroup("shard")
     group.addoption(
@@ -34,20 +38,20 @@ def pytest_addoptions(parser: Parser):
 
 
 class PytestShardPlugin:
-    def __init__(self, config):
+    def __init__(self: Self, config: "_pytest.config.Config") -> None:
         self.config = config
 
-    def pytest_report_collectionfinish(self, config, items) -> str:
+    def pytest_report_collectionfinish(self: Self, config: "_pytest.config.Config", items: "list[_pytest.unittest.TestCaseFunction]") -> str:
         """Log how many and which items are tested in this shard."""
         msg = f"Running {len(items)} items in this shard"
         if config.getoption("print_items"):
             msg += ": " + ", ".join([item.nodeid for item in items])
         return msg
 
-    def sha256hash(self, x: str) -> int:
+    def sha256hash(self: Self, x: str) -> int:
         return int.from_bytes(hashlib.sha256(x.encode()).digest(), "little")
 
-    def filter_items_by_shard(self, items, shard_id: int, num_shards: int):
+    def filter_items_by_shard(self: Self, items: "list[_pytest.unittest.TestCaseFunction]", shard_id: int, num_shards: int) -> "list[_pytest.unittest.TestCaseFunction]":
         """Computes `items` that should be tested in `shard_id` out of `num_shards` total shards."""
         new_items = [
             item
@@ -56,7 +60,7 @@ class PytestShardPlugin:
         ]
         return new_items
 
-    def pytest_collection_modifyitems(self, config, items):
+    def pytest_collection_modifyitems(self: Self, config: "_pytest.config.Config", items: "list[_pytest.unittest.TestCaseFunction]") -> None:
         """Mutate the collection to consist of just items to be tested in this shard."""
         shard_id = config.getoption("shard_id")
         shard_total = config.getoption("num_shards")

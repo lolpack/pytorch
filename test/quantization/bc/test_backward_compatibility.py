@@ -1,5 +1,8 @@
 # Owner(s): ["oncall: quantization"]
 
+from typing import TYPE_CHECKING, Self, Set
+if TYPE_CHECKING:
+    import torch.ao.quantization.stubs
 import os
 import sys
 import unittest
@@ -27,13 +30,13 @@ from torch.testing._internal.quantization_torch_package_models import (
 )
 
 
-def remove_prefix(text, prefix):
+def remove_prefix(text: str, prefix: str) -> str:
     if text.startswith(prefix):
         return text[len(prefix) :]
     return text
 
 
-def get_filenames(self, subname):
+def get_filenames(self: "TestSerialization", subname: None) -> tuple[str, str, str, str, str, str, str]:
     # NB: we take __file__ from the module that defined the test
     # class, so we place the expect directory where the test script
     # lives, NOT where test/common_utils.py lives.
@@ -183,8 +186,8 @@ class TestSerialization(TestCase):
         self.assertEqual(qmodule_traced(input_tensor), expected, atol=prec)
 
     def _test_obs(
-        self, obs, input_size, subname=None, generate=False, check_numerics=True
-    ):
+        self: Self, obs: "torch.ao.quantization.stubs.QuantWrapper", input_size: list[int], subname: None=None, generate: bool=False, check_numerics: bool=True
+    ) -> None:
         """
         Test observer code can be loaded from state_dict.
         """
@@ -533,17 +536,17 @@ class TestSerialization(TestCase):
                 new_zipfile_serialization=True,
             )
 
-    def test_per_channel_observer(self):
+    def test_per_channel_observer(self: Self) -> None:
         obs = PerChannelMinMaxObserver()
         self._test_obs(obs, input_size=[5, 5], generate=False)
 
-    def test_per_tensor_observer(self):
+    def test_per_tensor_observer(self: Self) -> None:
         obs = MinMaxObserver()
         self._test_obs(obs, input_size=[5, 5], generate=False)
 
-    def test_default_qat_qconfig(self):
+    def test_default_qat_qconfig(self: Self) -> None:
         class Model(nn.Module):
-            def __init__(self) -> None:
+            def __init__(self: Self) -> None:
                 super().__init__()
                 self.linear = nn.Linear(5, 5)
                 self.relu = nn.ReLU()

@@ -7,7 +7,7 @@ import sys
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 from types import MethodType
-from typing import Any, List, Optional, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Iterator, List, Optional, Union
 
 import pytest
 from _pytest.config import Config, filename_arg
@@ -19,10 +19,12 @@ from _pytest.stash import StashKey
 from _pytest.terminal import _get_raw_skip_reason
 
 from pytest_shard_custom import pytest_addoptions as shard_addoptions, PytestShardPlugin
-
-
 if TYPE_CHECKING:
     from _pytest._code.code import ReprFileLocation
+    import _pytest._py.path
+    import _pytest.main
+    import _pytest.terminal
+    import pathlib
 
 # a lot of this file is copied from _pytest.junitxml and modified to get rerun info
 
@@ -199,7 +201,7 @@ class LogXMLReruns(LogXML):
 # imitating summary_failures in pytest's terminal.py
 # both hookwrapper and tryfirst to make sure this runs before pytest's
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
-def pytest_terminal_summary(terminalreporter, exitstatus, config):
+def pytest_terminal_summary(terminalreporter: "_pytest.terminal.TerminalReporter", exitstatus: int, config: Config) -> Iterator[None]:
     # prints stack traces for reruns
     if terminalreporter.config.option.tbstyle != "no":
         reports = terminalreporter.getreports("rerun")
@@ -219,7 +221,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
 
 @pytest.hookimpl(tryfirst=True)
-def pytest_pycollect_makemodule(module_path, path, parent) -> Module:
+def pytest_pycollect_makemodule(module_path: "pathlib.PosixPath", path: "_pytest._py.path.LocalPath", parent: "_pytest.main.Dir") -> Module:
     if parent.config.getoption("--use-main-module"):
         mod = Module.from_parent(parent, path=module_path)
         mod._getobj = MethodType(lambda x: sys.modules["__main__"], mod)
@@ -227,7 +229,7 @@ def pytest_pycollect_makemodule(module_path, path, parent) -> Module:
 
 
 @pytest.hookimpl(hookwrapper=True)
-def pytest_report_teststatus(report, config):
+def pytest_report_teststatus(report: TestReport, config: Config) -> Iterator[None]:
     # Add the test time to the verbose output, unforunately I don't think this
     # includes setup or teardown
     pluggy_result = yield
