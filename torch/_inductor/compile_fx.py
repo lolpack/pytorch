@@ -1727,6 +1727,7 @@ def compile_fx_aot(
     # [See NOTE] Unwrapping subclasses AOT
     unwrap_tensor_subclass_parameters(model_)
 
+    # pyrefly: ignore  # annotation-mismatch
     config_patches: dict[str, Any] = (
         {"cpp_wrapper": True}
         if config_patches is None

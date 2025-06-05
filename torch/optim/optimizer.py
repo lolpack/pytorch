@@ -503,6 +503,7 @@ class Optimizer:
                                 f"{func} must return None or a tuple of (new_args, new_kwargs), but got {result}."
                             )
 
+                # pyrefly: ignore  # invalid-param-spec
                 out = func(*args, **kwargs)
                 self._optimizer_step_code()
 

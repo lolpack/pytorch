@@ -477,6 +477,7 @@ def convolution(
     # which have much better performance.
     if len(x.get_size()) == 3 and len(kernel_shape) == 1 and device_type == "xpu":
         kwargs.update(
+            # pyrefly: ignore  # typed-dict-key-error
             {
                 "stride": (1,) + stride,
                 "padding": (0,) + padding,

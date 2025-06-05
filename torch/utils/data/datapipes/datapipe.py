@@ -46,6 +46,7 @@ class DataChunk(list[_T]):
         return indent + "[" + ", ".join(str(i) for i in iter(self)) + "]"
 
     def __iter__(self) -> Iterator[_T]:
+        # pyrefly: ignore  # invalid-yield
         yield from super().__iter__()
 
     def raw_iterator(self) -> Iterator[_T]:

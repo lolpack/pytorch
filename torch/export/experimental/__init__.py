@@ -279,6 +279,7 @@ class _ExportPackage:
                     if isinstance(fn, torch.nn.Module):
                         dynamic_shapes = v(fn, *args, **kwargs)  # type: ignore[arg-type]
                     else:
+                        # pyrefly: ignore  # invalid-param-spec
                         dynamic_shapes = v(*args, **kwargs)
                 except AssertionError:
                     continue

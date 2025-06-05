@@ -4336,6 +4336,7 @@ class GmWrapper(torch.nn.Module):
         self.unflatten_fn = unflatten_fn
 
     def forward(self, *args):
+        # pyrefly: ignore  # annotation-mismatch
         args: list[Any] = list(args)
         return self.gm(*self.unflatten_fn(args))
 

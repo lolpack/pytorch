@@ -1174,6 +1174,7 @@ class CppVecOverrides(CppOverrides):
                     return func(*new_args, **kwargs)
                 else:
                     # fallback to scalar ops
+                    # pyrefly: ignore  # invalid-super-call
                     scalar_ops = super(CppVecOverrides, self)
                     scalar_func = getattr(scalar_ops, func.__name__)
                     assert scalar_func is not None

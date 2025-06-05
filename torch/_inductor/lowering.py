@@ -420,7 +420,9 @@ def _register_lowering(
 
     @functools.wraps(decomp_fn)
     def wrapped(*args, **kwargs):
+        # pyrefly: ignore  # annotation-mismatch
         args: list[Any] = list(args)
+        # pyrefly: ignore  # annotation-mismatch
         kwargs: dict[str, Any] = dict(kwargs)
         unpacked = False
         # TODO maybe we need to use pytrees here

@@ -3301,6 +3301,7 @@ def canonicalize(
         ExportedProgram: The canonicalized exported program.
     """
     ep = copy.deepcopy(ep)
+    # pyrefly: ignore  # annotation-mismatch
     constants: set[str] = constants or set()
 
     opset_version = dict(sorted(ep.opset_version.items(), key=operator.itemgetter(0)))

@@ -467,10 +467,12 @@ def elementwise_unary_scalar_wrapper(
             dtype = utils.type_to_dtype(type(args[0]))
             args_ = list(args)
             args_[0] = torch.tensor(args[0], dtype=dtype)
+            # pyrefly: ignore  # invalid-param-spec
             result = fn(*args_, **kwargs)
             assert isinstance(result, torch.Tensor)
             return result.item()
 
+        # pyrefly: ignore  # invalid-param-spec
         return fn(*args, **kwargs)
 
     _fn.__signature__ = sig  # type: ignore[attr-defined]

@@ -191,7 +191,7 @@ use_untyped_imports = false
 # `error` = true, means the error is turned on
 
 [errors]
-annotation-mismatch = false # error-count = 5
+annotation-mismatch = true # error-count = 5
 assert-type = true
 async-error = true
 bad-argument-count = true
@@ -214,12 +214,12 @@ invalid-argument = false # error-count = 148
 invalid-inheritance = false # error-count = 16
 invalid-literal = true
 invalid-overload = true
-invalid-param-spec = false # error-count = 5
-invalid-super-call = false # error-count = 1
+invalid-param-spec = true # error-count = 5
+invalid-super-call = true # error-count = 1
 invalid-syntax = true
 invalid-type-var = false # error-count = 9
 invalid-type-var-tuple = true
-invalid-yield = false # error-count = 1
+invalid-yield = true # error-count = 1
 match-error = true
 missing-argument = false # error-count = 24
 missing-attribute = false # error-count = 1341
@@ -230,10 +230,10 @@ not-a-type = false # error-count = 13
 not-callable = false # error-count = 231
 not-iterable = false # error-count = 60
 parse-error = true
-read-only = false # error-count = 2
+read-only = true # error-count = 2
 reveal-type = true
 type-alias-error = true
-typed-dict-key-error = false # error-count = 2
+typed-dict-key-error = true # error-count = 2
 unbound-name = false # error-count = 40
 unexpected-keyword = false # error-count = 513
 unknown = false # error-count 34
