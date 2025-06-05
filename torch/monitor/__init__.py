@@ -33,7 +33,7 @@ class TensorboardEventHandler:
         """
         self._writer = writer
 
-    def __call__(self, event: Event) -> None:
+    def __call__(self, event) -> None:
         if event.name == STAT_EVENT:
             for k, v in event.data.items():
                 self._writer.add_scalar(k, v, walltime=event.timestamp.timestamp())

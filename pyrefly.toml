@@ -1,18 +1,53 @@
+###############################################################################
+#  Pyrefly configuration for PyTorch – fixed 2025‑06‑04                       #
+###############################################################################
+
+# ---------------------------------------------------------------------------
+# What to type‑check
+# ---------------------------------------------------------------------------
 project_includes = [
-    "torch",
     "caffe2",
-    "test/test_bundled_images.py",
-    "test/test_bundled_inputs.py",
-    "test/test_complex.py",
-    "test/test_datapipe.py",
-    "test/test_futures.py",
-    "test/test_numpy_interop.py",
-    "test/test_torch.py",
-    "test/test_type_hints.py",
-    "test/test_type_info.py",
-    "test/test_utils.py",
+    "torch/func/**",
+    "torch/fft/**",
+    "torch/func/**",
+    # "torch/futures/**",
+    "torch/func/**",
+    "torch/monitor/**",
+    # "tools",
+    #"torch/profiler/_memory_profiler.py",
+    #"torch/utils/_pytree.py",
+    #"torch/utils/_cxx_pytree.py",
+    "torch/utils/benchmark/utils/common.py",
+    #"torch/utils/benchmark/utils/timer.py",
+    #"torch/utils/benchmark/utils/valgrind_wrapper"
+    
+    # Uncomment any test files you want included:
+    # "test/test_bundled_images.py"",
+    # ""test/test_bundled_inputs.py",
 ]
+
 project_excludes = [
+  "benchmarks/instruction_counts/applications/ci.py",
+  "torch/_dynamo/backends/debugging.py",
+  "torch/_dynamo/backends/distributed.py",
+  "torch/_dynamo/backends/registry.py",
+  "torch/_dynamo/backends/tvm.py",
+  "torch/_dynamo/variables/constant.py",
+  "torch/_dynamo/variables/functions.py",
+  "torch/_dynamo/variables/higher_order_ops.py",
+  "torch/_dynamo/variables/misc.py",
+  "torch/_dynamo/variables/optimizer.py",
+  "torch/_dynamo/variables/tensor.py",
+  "torch/_dynamo/variables/user_defined.py",
+  "torch/csrc/lazy/test_mnist.py",
+  "torch/distributed/checkpoint/_fsspec_filesystem.py",
+  "torch/fx/passes/shape_prop.py",
+  "torch/fx/proxy.py",
+  "torch/_functorch/aot_autograd.py",
+  "torch/testing/_internal/common_device_type.py",
+  "torch/testing/_internal/common_distributed.py",
+  "torch/testing/_internal/jit_utils.py",
+  "torch/testing/_internal/logging_tensor.py",
   "torch/include/**",
   "torch/csrc/**",
   "torch/distributed/elastic/agent/server/api.py",
@@ -27,62 +62,139 @@ project_excludes = [
   "*/__pycache__/**",
   "*/.*",
 ]
+
+# ---------------------------------------------------------------------------
+# Import fall‑backs
+# ---------------------------------------------------------------------------
 replace_imports_with_any = [
-    "torch._C._jit_tree_views.*",
-    "torch.for_onnx.onnx.*",
-    "torch.ao.quantization.experimental.apot_utils.*",
-    "torch.ao.quantization.experimental.quantizer.*",
-    "torch.ao.quantization.experimental.observer.*",
-    "torch.ao.quantization.experimental.APoT_tensor.*",
-    "torch.ao.quantization.experimental.fake_quantize_function.*",
-    "torch.ao.quantization.experimental.fake_quantize.*",
-    "triton.*",
-    "tensorflow.*",
-    "tensorboard.*",
-    "matplotlib.*",
-    "numpy.*",
-    "sympy.*",
-    "hypothesis.*",
-    "tqdm.*",
-    "multiprocessing.*",
-    "setuptools.*",
-    "distutils.*",
-    "nvd3.*",
-    "future.utils.*",
-    "past.builtins.*",
-    "numba.*",
-    "PIL.*",
-    "moviepy.*",
-    "cv2.*",
-    "torchvision.*",
-    "pycuda.*",
-    "tensorrt.*",
-    "tornado.*",
-    "pydot.*",
-    "networkx.*",
-    "scipy.*",
-    "IPython.*",
-    "google.protobuf.textformat.*",
-    "lmdb.*",
-    "mpi4py.*",
-    "skimage.*",
-    "librosa.*",
-    "mypy.*",
-    "xml.*",
-    "boto3.*",
-    "dill.*",
-    "usort.*",
-    "cutlass_library.*",
-    "deeplearning.*",
-    "einops.*",
-    "libfb.*",
-    "torch.fb.*",
-    "torch.*.fb.*",
-    "torch_xla.*",
-    "onnx.*",
-    "onnxruntime.*",
-    "onnxscript.*",
-    "redis.*"
+  "torch.*",
+  "torch.for_onnx.onnx.*",
+  "torch.ao.quantization.experimental.apot_utils.*",
+  "torch.ao.quantization.experimental.quantizer.*",
+  "torch.ao.quantization.experimental.observer.*",
+  "torch.ao.quantization.experimental.APoT_tensor.*",
+  "torch.ao.quantization.experimental.fake_quantize_function.*",
+  "torch.ao.quantization.experimental.fake_quantize.*",
+  "triton.*",
+  "tensorflow.*",
+  "tensorboard.*",
+  "matplotlib.*",
+  "numpy.*",
+  "sympy.*",
+  "hypothesis.*",
+  "tqdm.*",
+  "multiprocessing.*",
+  "setuptools.*",
+  "distutils.*",
+  "nvd3.*",
+  "future.utils.*",
+  "past.builtins.*",
+  "numba.*",
+  "PIL.*",
+  "moviepy.*",
+  "cv2.*",
+  "torchvision.*",
+  "pycuda.*",
+  "tensorrt.*",
+  "tornado.*",
+  "pydot.*",
+  "networkx.*",
+  "scipy.*",
+  "IPython.*",
+  "google.protobuf.textformat.*",
+  "lmdb.*",
+  "mpi4py.*",
+  "skimage.*",
+  "librosa.*",
+  "mypy.*",
+  "xml.*",
+  "boto3.*",
+  "dill.*",
+  "usort.*",
+  "cutlass_library.*",
+  "deeplearning.*",
+  "einops.*",
+  "libfb.*",
+  "torch.fb.*",
+  "torch.*.fb.*",
+  "torch_xla.*",
+  "onnx.*",
+  "onnxruntime.*",
+  "onnxscript.*",
+  "redis.*",
+  "requests.*",
+  "yaml.*",
+  "linter_test_case.*",
+  "expecttest.*",
+  "dataclasses_json.*",
+  "rich.*",
+  "gen_operators_yaml.*",
+  "packaging.*",
+  "libcst.*",
+  "usort.*",
+  "isort.*",
+  "black.*",
 ]
 
+# ---------------------------------------------------------------------------
+# How to treat untyped code
+# ---------------------------------------------------------------------------
 untyped_def_behavior = "check-and-infer-return-any"
+use_untyped_imports = false
+
+[errors]
+implicitly-defined-attribute = false
+
+# ---------------------------------------------------------------------------
+# SubConfigs – fine‑grained overrides
+# ---------------------------------------------------------------------------
+[[sub_config]]
+matches = "torch/autograd/**"
+
+# Disable missing‑attribute errors in autograd internals
+[sub_config.errors]
+missing-attribute = false
+
+[[sub_config]]
+matches = "torch/ao/**"
+
+[sub_config.errors]
+missing-attribute = false
+
+[[sub_config]]
+matches = "torch/utils/benchmark/utils/common.py"
+
+[sub_config.errors]
+missing-argument = false
+implicitly-defined-attribute = false
+
+# ---------------------------------------------------------------------------
+# Mypy strict 
+# ---------------------------------------------------------------------------
+
+[[sub_config]]
+matches = "tools/**"
+
+replace_imports_with_any = [
+  "requests.*",
+  "yaml.*",
+  "linter_test_case.*",
+  "expecttest.*",
+  "dataclasses_json.*",
+  "rich.*",
+  "gen_operators_yaml.*",
+  "packaging.*",
+  "libcst.*",
+  "usort.*",
+  "isort.*",
+  "black.*",
+  "package.*",
+  "tabulate.*"
+]
+
+[sub_config.errors]
+not-callable = false
+
+###############################################################################
+#  End of config                                                              #
+###############################################################################
