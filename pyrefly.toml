@@ -1,6 +1,14 @@
+###############################################################################
+#  Pyrefly configuration for PyTorch – fixed 2025‑06‑05                     #
+###############################################################################
+
+# ---------------------------------------------------------------------------
+# What to type‑check
+# ---------------------------------------------------------------------------
 project_includes = [
-    "torch",
+    # Mypy ini
     "caffe2",
+    "torch",
     "test/test_bundled_images.py",
     "test/test_bundled_inputs.py",
     "test/test_complex.py",
@@ -11,8 +19,40 @@ project_includes = [
     "test/test_type_hints.py",
     "test/test_type_info.py",
     "test/test_utils.py",
+    # From mypy.ini strict
+    ".github",
+    "benchmarks/instruction_counts",
+    "tools",
+    "torch/profiler/_memory_profiler.py",
+    "torch/utils/_pytree.py",
+    "torch/utils/_cxx_pytree.py",
+    "torch/utils/benchmark/utils/common.py",
+    "torch/utils/benchmark/utils/timer.py",
+    "torch/utils/benchmark/utils/valgrind_wrapper"
 ]
+
 project_excludes = [
+  "benchmarks/instruction_counts/applications/ci.py",
+  "torch/_dynamo/backends/debugging.py",
+  "torch/_dynamo/backends/distributed.py",
+  "torch/_dynamo/backends/registry.py",
+  "torch/_dynamo/backends/tvm.py",
+  "torch/_dynamo/variables/constant.py",
+  "torch/_dynamo/variables/functions.py",
+  "torch/_dynamo/variables/higher_order_ops.py",
+  "torch/_dynamo/variables/misc.py",
+  "torch/_dynamo/variables/optimizer.py",
+  "torch/_dynamo/variables/tensor.py",
+  "torch/_dynamo/variables/user_defined.py",
+  "torch/csrc/lazy/test_mnist.py",
+  "torch/distributed/checkpoint/_fsspec_filesystem.py",
+  "torch/fx/passes/shape_prop.py",
+  "torch/fx/proxy.py",
+  "torch/_functorch/aot_autograd.py",
+  "torch/testing/_internal/common_device_type.py",
+  "torch/testing/_internal/common_distributed.py",
+  "torch/testing/_internal/jit_utils.py",
+  "torch/testing/_internal/logging_tensor.py",
   "torch/include/**",
   "torch/csrc/**",
   "torch/distributed/elastic/agent/server/api.py",
@@ -27,62 +67,140 @@ project_excludes = [
   "*/__pycache__/**",
   "*/.*",
 ]
+
+# ---------------------------------------------------------------------------
+# Import fall‑backs
+# ---------------------------------------------------------------------------
 replace_imports_with_any = [
-    "torch._C._jit_tree_views.*",
-    "torch.for_onnx.onnx.*",
-    "torch.ao.quantization.experimental.apot_utils.*",
-    "torch.ao.quantization.experimental.quantizer.*",
-    "torch.ao.quantization.experimental.observer.*",
-    "torch.ao.quantization.experimental.APoT_tensor.*",
-    "torch.ao.quantization.experimental.fake_quantize_function.*",
-    "torch.ao.quantization.experimental.fake_quantize.*",
-    "triton.*",
-    "tensorflow.*",
-    "tensorboard.*",
-    "matplotlib.*",
-    "numpy.*",
-    "sympy.*",
-    "hypothesis.*",
-    "tqdm.*",
-    "multiprocessing.*",
-    "setuptools.*",
-    "distutils.*",
-    "nvd3.*",
-    "future.utils.*",
-    "past.builtins.*",
-    "numba.*",
-    "PIL.*",
-    "moviepy.*",
-    "cv2.*",
-    "torchvision.*",
-    "pycuda.*",
-    "tensorrt.*",
-    "tornado.*",
-    "pydot.*",
-    "networkx.*",
-    "scipy.*",
-    "IPython.*",
-    "google.protobuf.textformat.*",
-    "lmdb.*",
-    "mpi4py.*",
-    "skimage.*",
-    "librosa.*",
-    "mypy.*",
-    "xml.*",
-    "boto3.*",
-    "dill.*",
-    "usort.*",
-    "cutlass_library.*",
-    "deeplearning.*",
-    "einops.*",
-    "libfb.*",
-    "torch.fb.*",
-    "torch.*.fb.*",
-    "torch_xla.*",
-    "onnx.*",
-    "onnxruntime.*",
-    "onnxscript.*",
-    "redis.*"
+  "torch.*",
+  "torch.for_onnx.onnx.*",
+  "torch.ao.quantization.experimental.apot_utils.*",
+  "torch.ao.quantization.experimental.quantizer.*",
+  "torch.ao.quantization.experimental.observer.*",
+  "torch.ao.quantization.experimental.APoT_tensor.*",
+  "torch.ao.quantization.experimental.fake_quantize_function.*",
+  "torch.ao.quantization.experimental.fake_quantize.*",
+  "triton.*",
+  "tensorflow.*",
+  "tensorboard.*",
+  "matplotlib.*",
+  "numpy.*",
+  "sympy.*",
+  "hypothesis.*",
+  "tqdm.*",
+  "multiprocessing.*",
+  "setuptools.*",
+  "distutils.*",
+  "nvd3.*",
+  "future.utils.*",
+  "past.builtins.*",
+  "numba.*",
+  "PIL.*",
+  "moviepy.*",
+  "cv2.*",
+  "torchvision.*",
+  "pycuda.*",
+  "tensorrt.*",
+  "tornado.*",
+  "pydot.*",
+  "networkx.*",
+  "scipy.*",
+  "IPython.*",
+  "google.protobuf.textformat.*",
+  "lmdb.*",
+  "mpi4py.*",
+  "skimage.*",
+  "librosa.*",
+  "mypy.*",
+  "xml.*",
+  "boto3.*",
+  "dill.*",
+  "usort.*",
+  "cutlass_library.*",
+  "deeplearning.*",
+  "einops.*",
+  "libfb.*",
+  "torch.fb.*",
+  "torch.*.fb.*",
+  "torch_xla.*",
+  "onnx.*",
+  "onnxruntime.*",
+  "onnxscript.*",
+  "redis.*",
+  "requests.*",
+  "yaml.*",
+  "linter_test_case.*",
+  "expecttest.*",
+  "dataclasses_json.*",
+  "rich.*",
+  "gen_operators_yaml.*",
+  "packaging.*",
+  "libcst.*",
+  "usort.*",
+  "isort.*",
+  "black.*",
 ]
 
+# ---------------------------------------------------------------------------
+# How to treat untyped code
+# ---------------------------------------------------------------------------
 untyped_def_behavior = "check-and-infer-return-any"
+use_untyped_imports = false
+
+# Current errors in PyTorch across normal and strict Mode
+# `error` = true, means the error is turned on
+
+[errors]
+annotation-mismatch = false # error-count = 5
+assert-type = true
+async-error = true
+bad-argument-count = true
+bad-argument-type = false # error-count = 1202
+bad-assignment = false # error-count = 145
+bad-class-definition = true
+bad-function-definition = false # error-count = 2
+bad-keyword-argument = true
+bad-override = false # error-count = 181
+bad-return = false # error-count = 78
+bad-specialization = false # error-count = 150
+bad-unpacking = false # error-count = 13
+delete-error = true
+implicitly-defined-attribute = false # error-count 624
+import-error = false # error-count = 115
+index-error = false # error-count = 16
+internal-error = false # error-count = 25
+invalid-annotation = false # error-count = 12
+invalid-argument = false # error-count = 148
+invalid-inheritance = false # error-count = 16
+invalid-literal = true
+invalid-overload = true
+invalid-param-spec = false # error-count = 5
+invalid-super-call = false # error-count = 1
+invalid-syntax = true
+invalid-type-var = false # error-count = 9
+invalid-type-var-tuple = true
+invalid-yield = false # error-count = 1
+match-error = true
+missing-argument = false # error-count = 24
+missing-attribute = false # error-count = 1341
+missing-module-attribute = false # error-count = 7
+no-access = false # error-count = 8
+no-matching-overload = false # error-count = 256
+not-a-type = false # error-count = 13
+not-callable = false # error-count = 231
+not-iterable = false # error-count = 60
+parse-error = true
+read-only = false # error-count = 2
+reveal-type = true
+type-alias-error = true
+typed-dict-key-error = false # error-count = 2
+unbound-name = false # error-count = 40
+unexpected-keyword = false # error-count = 513
+unknown = false # error-count 34
+unknown-name = false # error-count = 161
+unsupported-operand = false # error-count = 26
+unsupported = true
+
+###############################################################################
+#  End of config                                                              #
+###############################################################################
