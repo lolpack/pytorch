@@ -1,5 +1,8 @@
 ###############################################################################
-#  Pyrefly configuration for PyTorch – fixed 2025‑06‑05                     #
+#  Pyrefly configuration for PyTorch –                                        #
+#  WIP configuration to match mypy while also relaxing rules as               #
+#  Pyrefly is in development and the level of strictness in                   #
+#  Pytorch is determined                                                      #
 ###############################################################################
 
 # ---------------------------------------------------------------------------
@@ -19,7 +22,7 @@ project_includes = [
     "test/test_type_hints.py",
     "test/test_type_info.py",
     "test/test_utils.py",
-    # From mypy.ini strict
+    # From mypy-strict.ini
     ".github",
     "benchmarks/instruction_counts",
     "tools",
@@ -69,7 +72,7 @@ project_excludes = [
 ]
 
 # ---------------------------------------------------------------------------
-# Import fall‑backs
+# Import fall‑backs - removes strictness
 # ---------------------------------------------------------------------------
 replace_imports_with_any = [
     "torch.*",
@@ -187,59 +190,85 @@ replace_imports_with_any = [
 untyped_def_behavior = "check-and-infer-return-any"
 use_untyped_imports = false
 
+# ---------------------------------------------------------------------------
 # Current errors in PyTorch across normal and strict Mode
 # `error` = true, means the error is turned on
+# ---------------------------------------------------------------------------
 
 [errors]
-annotation-mismatch = false # error-count = 5
-assert-type = true
-async-error = true
-bad-argument-count = true
-bad-argument-type = false # error-count = 1202
-bad-assignment = false # error-count = 145
-bad-class-definition = true
-bad-function-definition = false # error-count = 2
-bad-keyword-argument = true
-bad-override = false # error-count = 181
-bad-return = false # error-count = 78
-bad-specialization = false # error-count = 150
-bad-unpacking = false # error-count = 13
-delete-error = true
-implicitly-defined-attribute = false # error-count 624
-import-error = true # error-count = 115
-index-error = false # error-count = 16
-internal-error = false # error-count = 25
-invalid-annotation = false # error-count = 12
-invalid-argument = false # error-count = 148
-invalid-inheritance = false # error-count = 16
-invalid-literal = true
-invalid-overload = true
-invalid-param-spec = false # error-count = 5
-invalid-super-call = false # error-count = 1
-invalid-syntax = true
-invalid-type-var = false # error-count = 9
-invalid-type-var-tuple = true
-invalid-yield = false # error-count = 1
-match-error = true
-missing-argument = false # error-count = 24
-missing-attribute = false # error-count = 1341
-missing-module-attribute = false # error-count = 7
-no-access = false # error-count = 8
-no-matching-overload = false # error-count = 256
-not-a-type = false # error-count = 13
-not-callable = false # error-count = 231
-not-iterable = false # error-count = 60
-parse-error = true
-read-only = false # error-count = 2
-reveal-type = true
-type-alias-error = true
-typed-dict-key-error = false # error-count = 2
-unbound-name = false # error-count = 40
-unexpected-keyword = false # error-count = 513
-unknown = false # error-count 34
-unknown-name = false # error-count = 161
-unsupported-operand = false # error-count = 26
-unsupported = true
+bad-argument-type = false # 55 instances
+missing-attribute = false # 33 instances
+bad-specialization = false # 29 instances
+internal-error = false # 12 instances
+not-callable = false # 7 instances
+missing-argument = false # 6 instances
+unknown-name = false # 6 instances
+no-matching-overload = false # 5 instances
+not-iterable = false # 4 instances
+bad-return = false # 3 instances
+invalid-inheritance = false # 1 instance
+invalid-argument = false # 1 instance
+
+# ---------------------------------------------------------------------------
+## Per-module suppressions
+# ---------------------------------------------------------------------------
+
+[[sub-config]]
+matches = "torch/"
+
+[sub-config.errors]
+missing-attribute = false # 1156 instances
+bad-argument-type = false # 690 instances
+implicitly-defined-attribute = false # 621 instances
+unexpected-keyword = false # 483 instances
+not-callable = false # 219 instances
+no-matching-overload = false # 186 instances
+bad-override = false # 174 instances
+bad-assignment = false # 166 instances
+unknown-name = false # 154 instances
+invalid-argument = false # 149 instances
+bad-specialization = false # 74 instances
+bad-return = false # 63 instances
+not-iterable = false # 53 instances
+unbound-name = false # 40 instances
+unsupported-operand = false # 18 instances
+index-error = false # 16 instances
+missing-argument = false # 16 instances
+invalid-inheritance = false # 13 instances
+bad-unpacking = false # 13 instances
+not-a-type = false # 12 instances
+invalid-annotation = false # 11 instances
+invalid-type-var = false # 10 instances
+no-access = false # 8 instances
+missing-module-attribute = false # 7 instances
+invalid-param-spec = false # 5 instances
+annotation-mismatch = false # 5 instances
+internal-error = false # 5 instances
+bad-function-definition = false # 2 instances
+typed-dict-key-error = false # 2 instances
+read-only = false # 2 instances
+invalid-super-call = false # 1 instance
+
+[[sub-config]]
+matches = "tools/"
+
+[sub-config.errors]
+missing-attribute = false # 76 instances
+bad-argument-type = false # 31 instances
+not-callable = false # 30 instances
+no-matching-overload = false # 11 instances
+bad-return = false # 9 instances
+bad-assignment = false # 6 instances
+bad-override = false # 4 instances
+unsupported-operand = false # 3 instances
+implicitly-defined-attribute = false # 3 instances
+invalid-inheritance = false # 2 instances
+not-iterable = false # 1 instance
+invalid-annotation = false # 1 instance
+bad-specialization = false # 1 instance
+not-a-type = false # 1 instance
+invalid-argument = false # 1 instance
+unknown-name = false # 1 instance
 
 ###############################################################################
 #  End of config                                                              #
