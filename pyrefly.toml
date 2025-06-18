@@ -1,6 +1,17 @@
+###############################################################################
+#  Pyrefly configuration for PyTorch –                                        #
+#  WIP configuration to match mypy while also relaxing rules.                 #
+#  Pyrefly is still in development and the level of strictness in             #
+#  Pytorch should be determined.                                              #
+###############################################################################
+
+# ---------------------------------------------------------------------------
+# What to type‑check
+# ---------------------------------------------------------------------------
 project_includes = [
-    "torch",
+    # Mypy ini
     "caffe2",
+    "torch",
     "test/test_bundled_images.py",
     "test/test_bundled_inputs.py",
     "test/test_complex.py",
@@ -11,8 +22,40 @@ project_includes = [
     "test/test_type_hints.py",
     "test/test_type_info.py",
     "test/test_utils.py",
+    # From mypy-strict.ini
+    ".github",
+    "benchmarks/instruction_counts",
+    "tools",
+    "torch/profiler/_memory_profiler.py",
+    "torch/utils/_pytree.py",
+    "torch/utils/_cxx_pytree.py",
+    "torch/utils/benchmark/utils/common.py",
+    "torch/utils/benchmark/utils/timer.py",
+    "torch/utils/benchmark/utils/valgrind_wrapper"
 ]
+
 project_excludes = [
+  "benchmarks/instruction_counts/applications/ci.py",
+  "torch/_dynamo/backends/debugging.py",
+  "torch/_dynamo/backends/distributed.py",
+  "torch/_dynamo/backends/registry.py",
+  "torch/_dynamo/backends/tvm.py",
+  "torch/_dynamo/variables/constant.py",
+  "torch/_dynamo/variables/functions.py",
+  "torch/_dynamo/variables/higher_order_ops.py",
+  "torch/_dynamo/variables/misc.py",
+  "torch/_dynamo/variables/optimizer.py",
+  "torch/_dynamo/variables/tensor.py",
+  "torch/_dynamo/variables/user_defined.py",
+  "torch/csrc/lazy/test_mnist.py",
+  "torch/distributed/checkpoint/_fsspec_filesystem.py",
+  "torch/fx/passes/shape_prop.py",
+  "torch/fx/proxy.py",
+  "torch/_functorch/aot_autograd.py",
+  "torch/testing/_internal/common_device_type.py",
+  "torch/testing/_internal/common_distributed.py",
+  "torch/testing/_internal/jit_utils.py",
+  "torch/testing/_internal/logging_tensor.py",
   "torch/include/**",
   "torch/csrc/**",
   "torch/distributed/elastic/agent/server/api.py",
@@ -27,8 +70,12 @@ project_excludes = [
   "*/__pycache__/**",
   "*/.*",
 ]
+
+# ---------------------------------------------------------------------------
+# Import fall‑backs - removes strictness
+# ---------------------------------------------------------------------------
 replace_imports_with_any = [
-    "torch._C._jit_tree_views.*",
+    "torch.*",
     "torch.for_onnx.onnx.*",
     "torch.ao.quantization.experimental.apot_utils.*",
     "torch.ao.quantization.experimental.quantizer.*",
@@ -82,7 +129,147 @@ replace_imports_with_any = [
     "onnx.*",
     "onnxruntime.*",
     "onnxscript.*",
-    "redis.*"
+    "redis.*",
+    "requests.*",
+    "yaml.*",
+    "linter_test_case.*",
+    "expecttest.*",
+    "dataclasses_json.*",
+    "rich.*",
+    "gen_operators_yaml.*",
+    "packaging.*",
+    "libcst.*",
+    "usort.*",
+    "isort.*",
+    "black.*",
+    "google.*",
+    "tabulate.*",
+    "transformers.*",
+    "optree.*",
+    "filelock.*",
+    "applications.*",
+    "check_labels.*",
+    "colorama.*",
+    "core.api.*",
+    "core.expand.*",
+    "core.types.*",
+    "core.utils.*",
+    "cutlass.*",
+    "definitions.setup.*",
+    "definitions.standard.*",
+    "execution.runner.*",
+    "execution.work.*",
+    "file_io_utils.*",
+    "filter_test_configs.*",
+    "foo.*",
+    "gen_op_registration_allowlist.*",
+    "generate_binary_build_matrix.*",
+    "github.*",
+    "github.Issue.*",
+    "github_utils.*",
+    "gitutils.*",
+    "jinja2.*",
+    "label_utils.*",
+    "package.oss.utils.*",
+    "psutil.*",
+    "pynvml.*",
+    "pytest.*",
+    "pytest_caching_utils.*",
+    "runner_determinator.*",
+    "safetensors.*",
+    "test_trymerge.*",
+    "trymerge.*",
+    "trymerge_explainer.*",
+    "tryrebase",
+    "worker.*",
 ]
 
+# ---------------------------------------------------------------------------
+# How to treat untyped code
+# ---------------------------------------------------------------------------
 untyped_def_behavior = "check-and-infer-return-any"
+use_untyped_imports = false
+
+# ---------------------------------------------------------------------------
+# Current errors in PyTorch across normal and strict Mode
+# `error` = true, means the error is turned on
+# ---------------------------------------------------------------------------
+
+[errors]
+bad-argument-type = false # 55 instances
+missing-attribute = false # 33 instances
+bad-specialization = false # 29 instances
+internal-error = false # 12 instances
+not-callable = false # 7 instances
+missing-argument = false # 6 instances
+unknown-name = false # 6 instances
+no-matching-overload = false # 5 instances
+not-iterable = false # 4 instances
+bad-return = false # 3 instances
+invalid-inheritance = false # 1 instance
+invalid-argument = false # 1 instance
+
+# ---------------------------------------------------------------------------
+## Per-module suppressions
+# ---------------------------------------------------------------------------
+
+[[sub-config]]
+matches = "torch/"
+
+[sub-config.errors]
+missing-attribute = false # 1156 instances
+bad-argument-type = false # 690 instances
+implicitly-defined-attribute = false # 621 instances
+unexpected-keyword = false # 483 instances
+not-callable = false # 219 instances
+no-matching-overload = false # 186 instances
+bad-override = false # 174 instances
+bad-assignment = false # 166 instances
+unknown-name = false # 154 instances
+invalid-argument = false # 149 instances
+bad-specialization = false # 74 instances
+bad-return = false # 63 instances
+not-iterable = false # 53 instances
+unbound-name = false # 40 instances
+unsupported-operand = false # 18 instances
+index-error = false # 16 instances
+missing-argument = false # 16 instances
+invalid-inheritance = false # 13 instances
+bad-unpacking = false # 13 instances
+not-a-type = false # 12 instances
+invalid-annotation = false # 11 instances
+invalid-type-var = false # 10 instances
+no-access = false # 8 instances
+missing-module-attribute = false # 7 instances
+invalid-param-spec = false # 5 instances
+annotation-mismatch = false # 5 instances
+internal-error = false # 5 instances
+bad-function-definition = false # 2 instances
+typed-dict-key-error = false # 2 instances
+read-only = false # 2 instances
+invalid-super-call = false # 1 instance
+
+[[sub-config]]
+matches = "tools/"
+
+[sub-config.errors]
+missing-attribute = false # 76 instances
+bad-argument-type = false # 31 instances
+not-callable = false # 30 instances
+no-matching-overload = false # 11 instances
+bad-return = false # 9 instances
+bad-assignment = false # 6 instances
+bad-override = false # 4 instances
+unsupported-operand = false # 3 instances
+implicitly-defined-attribute = false # 3 instances
+invalid-inheritance = false # 2 instances
+not-iterable = false # 1 instance
+invalid-annotation = false # 1 instance
+bad-specialization = false # 1 instance
+not-a-type = false # 1 instance
+invalid-argument = false # 1 instance
+unknown-name = false # 1 instance
+
+###############################################################################
+#  End of config                                                              #
+###############################################################################
