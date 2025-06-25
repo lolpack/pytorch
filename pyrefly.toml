@@ -1,88 +1,74 @@
+###############################################################################
+#  Pyrefly configuration for PyTorch –                                        #
+#  WIP configuration to match mypy while also relaxing rules as               #
+#  Pyrefly is in development and the level of strictness in                   #
+#  Pytorch is determined                                                      #
+###############################################################################
+
+# ---------------------------------------------------------------------------
+# What to type‑check
+# ---------------------------------------------------------------------------
 project_includes = [
-    "torch",
-    "caffe2",
-    "test/test_bundled_images.py",
-    "test/test_bundled_inputs.py",
-    "test/test_complex.py",
-    "test/test_datapipe.py",
-    "test/test_futures.py",
-    "test/test_numpy_interop.py",
-    "test/test_torch.py",
-    "test/test_type_hints.py",
-    "test/test_type_info.py",
-    "test/test_utils.py",
-]
-project_excludes = [
-  "torch/include/**",
-  "torch/csrc/**",
-  "torch/distributed/elastic/agent/server/api.py",
-  "torch/testing/_internal/**",
-  "torch/distributed/fsdp/fully_sharded_data_parallel.py",
-  "torch/ao/quantization/pt2e/_affine_quantization.py",
-  "torch/nn/modules/pooling.py",
-  "torch/nn/parallel/_functions.py",
-  "torch/_appdirs.py",
-  "torch/multiprocessing/pool.py",
-  "torch/overrides.py",
-  "*/__pycache__/**",
-  "*/.*",
-]
-replace_imports_with_any = [
-    "torch._C._jit_tree_views.*",
-    "torch.for_onnx.onnx.*",
-    "torch.ao.quantization.experimental.apot_utils.*",
-    "torch.ao.quantization.experimental.quantizer.*",
-    "torch.ao.quantization.experimental.observer.*",
-    "torch.ao.quantization.experimental.APoT_tensor.*",
-    "torch.ao.quantization.experimental.fake_quantize_function.*",
-    "torch.ao.quantization.experimental.fake_quantize.*",
-    "triton.*",
-    "tensorflow.*",
-    "tensorboard.*",
-    "matplotlib.*",
-    "numpy.*",
-    "sympy.*",
-    "hypothesis.*",
-    "tqdm.*",
-    "multiprocessing.*",
-    "setuptools.*",
-    "distutils.*",
-    "nvd3.*",
-    "future.utils.*",
-    "past.builtins.*",
-    "numba.*",
-    "PIL.*",
-    "moviepy.*",
-    "cv2.*",
-    "torchvision.*",
-    "pycuda.*",
-    "tensorrt.*",
-    "tornado.*",
-    "pydot.*",
-    "networkx.*",
-    "scipy.*",
-    "IPython.*",
-    "google.protobuf.textformat.*",
-    "lmdb.*",
-    "mpi4py.*",
-    "skimage.*",
-    "librosa.*",
-    "mypy.*",
-    "xml.*",
-    "boto3.*",
-    "dill.*",
-    "usort.*",
-    "cutlass_library.*",
-    "deeplearning.*",
-    "einops.*",
-    "libfb.*",
-    "torch.fb.*",
-    "torch.*.fb.*",
-    "torch_xla.*",
-    "onnx.*",
-    "onnxruntime.*",
-    "onnxscript.*",
-    "redis.*"
+    "tools",
 ]
 
-untyped_def_behavior = "check-and-infer-return-any"
+# ---------------------------------------------------------------------------
+# Import fall‑backs - removes strictness
+# ---------------------------------------------------------------------------
+replace_imports_with_any = [
+    "requests.*",
+    "yaml.*",
+    "linter_test_case.*",
+    "expecttest.*",
+    "dataclasses_json.*",
+    "rich.*",
+    "gen_operators_yaml.*",
+    "packaging.*",
+    "libcst.*",
+    "usort.*",
+    "isort.*",
+    "black.*",
+    "tabulate.*",
+    "package.oss.utils",
+    "gen_op_registration_allowlist.*",
+]
+
+# ---------------------------------------------------------------------------
+# How to treat untyped code
+# ---------------------------------------------------------------------------
+# untyped_def_behavior = "check-and-infer-return-any"
+# use_untyped_imports = false
+
+# ---------------------------------------------------------------------------
+# Current errors in PyTorch across normal and strict Mode
+# `error` = true, means the error is turned on
+# ---------------------------------------------------------------------------
+
+# # ---------------------------------------------------------------------------
+# ## Per-module suppressions
+# # ---------------------------------------------------------------------------
+
+[[sub-config]]
+matches = "tools/"
+
+[sub-config.errors]
+missing-attribute = false # 76 instances
+bad-argument-type = false # 31 instances
+not-callable = false # 30 instances
+no-matching-overload = false # 11 instances
+bad-return = false # 9 instances
+bad-assignment = false # 6 instances
+bad-override = false # 4 instances
+unsupported-operand = false # 3 instances
+implicitly-defined-attribute = false # 3 instances
+invalid-inheritance = false # 2 instances
+not-iterable = false # 1 instance
+invalid-annotation = false # 1 instance
+bad-specialization = false # 1 instance
+not-a-type = false # 1 instance
+invalid-argument = false # 1 instance
+unknown-name = false # 1 instance
+
+###############################################################################
+#  End of config                                                              #
+###############################################################################
